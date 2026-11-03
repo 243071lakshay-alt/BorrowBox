@@ -1,18 +1,11 @@
-const mongoose=require('mongoose')
-const express=require('express')
-const connectDB=async()=>{
-    try{
-        const mongoURL=process.env.Mongo_url;
-        if(!mongoURL)
-        {
-            throw new Error("MongoDB url not found")
-        }
-        console.log("connecting to MongoDB")
-        await mongoose.connect(mongoURL)
-    }catch(error)
-    {
-        console.log("MongoDB connection error",error.message)
-        throw error;
-    }
+const mongoose = require("mongoose");
+
+async function connectDB() {
+  const uri = process.env.MONGO_URI;
+  if (!uri) throw new Error("MONGO_URI is missing. Copy .env.example to .env and configure it.");
+  mongoose.set("strictQuery", true);
+  await mongoose.connect(uri);
+  console.log("MongoDB connected");
 }
-module.exports=connectDB;
+
+module.exports = connectDB;
